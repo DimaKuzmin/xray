@@ -46,11 +46,10 @@ void AddOne				(const char *split)
 						return;
 
 	logCS.Enter			();
-
-#ifdef DEBUG
+	 
 	OutputDebugString	(split);
 	OutputDebugString	("\n");
-#endif
+ 
 
 //	DUMP_PHASE;
 	{

@@ -6,12 +6,14 @@
 
 void CSound_manager_interface::_create		(u64 window)
 {
-	if (strstr( Core.Params,"-dsound"))
+	//if (strstr( Core.Params,"-dsound"))
+	//{
+	//	SoundRenderD	= xr_new<CSoundRender_CoreD>();
+	//	SoundRender		= SoundRenderD;
+	//	Sound			= SoundRender;
+	//}
+	//else
 	{
-		SoundRenderD	= xr_new<CSoundRender_CoreD>();
-		SoundRender		= SoundRenderD;
-		Sound			= SoundRender;
-	}else{
 		SoundRenderA	= xr_new<CSoundRender_CoreA>();
 		SoundRender		= SoundRenderA;
 		Sound			= SoundRender;

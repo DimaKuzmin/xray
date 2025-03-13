@@ -27,9 +27,6 @@ XRCORE_API DUMMY_STUFF	*g_temporary_stuff = 0;
 #	pragma warning(disable:4995)
 #	include <malloc.h>
 #	pragma warning(pop)
-//#	define TRIVIAL_ENCRYPTOR_DECODER
-//#	include "trivial_encryptor.h"
-//#	undef TRIVIAL_ENCRYPTOR_DECODER
 #endif // PROTECTED_BUILD
 
 CLocatorAPI*		xr_FS = NULL;
@@ -389,19 +386,30 @@ void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 	strcpy_s	(N,sizeof(N),path);
 	strcat_s		(N,F.name);
 	xr_strlwr	(N);
-	
+	Msg("Start Reading Archive: %s", N);
+
+
 	if (F.attrib&_A_HIDDEN)			return;
 
-	if (F.attrib&_A_SUBDIR) {
-		if (bNoRecurse)				return;
-		if (0==xr_strcmp(F.name,"."))	return;
-		if (0==xr_strcmp(F.name,"..")) return;
+	if (F.attrib&_A_SUBDIR)
+	{
+	
+		if (bNoRecurse)				
+			return;
+		if (0==xr_strcmp(F.name,"."))	
+			return;
+		if (0==xr_strcmp(F.name,"..")) 
+			return;
 		strcat		(N,"\\");
 		Register	(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
-	} else {
-		if (strext(N) && 0==strncmp(strext(N),".db",3))		ProcessArchive	(N);
-		else												Register		(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
+	}
+	else
+	{
+ 		if (strext(N) && 0==strncmp(strext(N),".db",3))		
+			ProcessArchive	(N);
+		else						
+			Register		(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 	}
 }
 
@@ -540,9 +548,10 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 		if (!pFSltx && m_Flags.is(flScanAppRoot) )
 			pFSltx			= r_open("$app_root$",fs_ltx); 
 
+		string_path tmpAppPath = "";
 		if (!pFSltx)
 		{
-			string_path tmpAppPath	= "";
+			
 			strcpy_s				(tmpAppPath,sizeof(tmpAppPath), Core.ApplicationPath);
 			if (xr_strlen(tmpAppPath))
 			{
@@ -559,7 +568,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 		 else
 			append_path					("$fs_root$", "", 0, FALSE);
 			
-
+		Log								("Application Path: ", tmpAppPath);
 		Log								("using fs-ltx",fs_ltx);
 	}
 

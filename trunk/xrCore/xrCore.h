@@ -261,6 +261,8 @@ public:
 };
 
 // ********************************************** The Core definition
+extern XRCORE_API char g_application_path[256];
+
 class XRCORE_API xrCore 
 {
 public:

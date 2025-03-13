@@ -5,7 +5,7 @@
 #include "soundrender.h"
 #include "soundrender_coreD.h"
 #include "soundrender_emitter.h"
-
+/*
 CSoundRender_TargetD::CSoundRender_TargetD():CSoundRender_Target()
 {
 	pBuffer_base	= NULL;
@@ -202,3 +202,4 @@ void	CSoundRender_TargetD::fill_block		()
 
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
+*/

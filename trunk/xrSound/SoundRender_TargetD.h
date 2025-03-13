@@ -1,7 +1,7 @@
 #ifndef SoundRender_TargetDH
 #define SoundRender_TargetDH
 #pragma once
-
+/*
 #include "soundrender_Target.h"
 #include "soundrender_CoreD.h"
 
@@ -38,4 +38,5 @@ public:
 	virtual void				update					();
 	virtual void				fill_parameters			();
 };
+*/
 #endif

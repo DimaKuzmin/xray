@@ -2,8 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_XR_IOCONSOLE_H__ADEEFD61_7731_11D3_83D8_00C02610C34E__INCLUDED_)
-#define AFX_XR_IOCONSOLE_H__ADEEFD61_7731_11D3_83D8_00C02610C34E__INCLUDED_
 #pragma once
 
 #include "iinputreceiver.h"
@@ -19,7 +17,8 @@ class ENGINE_API CConsole  :
 {
 public:
 	//t-defs
-	struct str_pred : public std::binary_function<char*, char*, bool> {	
+	struct str_pred 
+	{	
 		IC bool operator()(const char* x, const char* y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
@@ -91,5 +90,3 @@ public:
 };
 
 ENGINE_API extern CConsole* Console;
-
-#endif // !defined(AFX_XR_IOCONSOLE_H__ADEEFD61_7731_11D3_83D8_00C02610C34E__INCLUDED_)

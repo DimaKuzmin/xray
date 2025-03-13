@@ -1,7 +1,7 @@
 #ifndef SoundRender_CoreDH
 #define SoundRender_CoreDH
 #pragma once
-
+/*
 #include "SoundRender_Core.h"
 
 #pragma warning(push)
@@ -51,4 +51,6 @@ public:
 	virtual const Fvector&	listener_position		( )				{ return Listener.vPosition; }
 };
 extern CSoundRender_CoreD* SoundRenderD;
+*/
+
 #endif
