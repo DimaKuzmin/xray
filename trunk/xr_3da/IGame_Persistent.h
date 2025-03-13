@@ -40,9 +40,10 @@ public:
 		{
 			reset					();
 			int						n = _min(4,_GetItemCount(cmd_line,'/'));
-			for (int i=0; i<n; ++i) {
+			for (int i=0; i<n; ++i)
+			{
 				_GetItem			(cmd_line,i,m_params[i],'/');
-				strlwr				(m_params[i]);
+				_strlwr				(m_params[i]);
 			}
 		}
 	};

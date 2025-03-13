@@ -42,44 +42,48 @@ void FlushLog			()
 
 void AddOne				(const char *split) 
 {
+	OutputDebugString(split);
+	OutputDebugString("\n");
+
 	if(!LogFile)		
-						return;
+		return;
 
 	logCS.Enter			();
-	 
-	OutputDebugString	(split);
-	OutputDebugString	("\n");
+	  
+  	shared_str			temp = shared_str(split);
+	LogFile->push_back	(temp);
  
-
-//	DUMP_PHASE;
-	{
-		shared_str			temp = shared_str(split);
-//		DUMP_PHASE;
-		LogFile->push_back	(temp);
-	}
-
-	//exec CallBack
-	if (LogExecCB&&LogCB)LogCB(split);
+ 	if (LogExecCB&&LogCB)
+		LogCB(split);
 
 	logCS.Leave				();
 }
 
 void Log				(const char *s) 
 {
-	int		i,j;
-	char	split[1024];
+	u32			length = strlen(s);
 
-	for (i=0,j=0; s[i]!=0; i++) {
-		if (s[i]=='\n') {
-			split[j]=0;	// end of line
-			if (split[0]==0) { split[0]=' '; split[1]=0; }
+	PSTR split = (PSTR) _alloca( (length + 1) * sizeof(char) );
+	int		i,j;
+	for (i = 0, j = 0; s[i] != 0; i++)
+	{
+		if (s[i] == '\n') 
+		{
+			split[j] = 0;	// end of line
+			if (split[0] == 0)
+			{
+				split[0] = ' '; 
+				split[1] = 0;
+			}
 			AddOne(split);
-			j=0;
-		} else {
-			split[j++]=s[i];
+			j = 0;
+		}
+		else 
+		{
+			split[j++] = s[i];
 		}
 	}
-	split[j]=0;
+	split[j] = 0;
 	AddOne(split);
 }
 

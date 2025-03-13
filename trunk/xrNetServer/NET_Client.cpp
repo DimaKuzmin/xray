@@ -444,7 +444,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 
 			R_CHK(NET->SetClientInfo	(&Pinfo,0,0,DPNSETCLIENTINFO_SYNC));
 		}
-		if ( stricmp( server_name, "localhost" ) == 0 )	
+		if ( _stricmp( server_name, "localhost" ) == 0 )	
 		{
 			WCHAR	SessionPasswordUNICODE[4096];
 			if ( xr_strlen( password_str ) )
@@ -1014,15 +1014,17 @@ void	IPureClient::Sync_Average	()
 	s32		size			= net_DeltaArray.size();
 	u32*	I				= net_DeltaArray.begin();
 	u32*  E					= I+size;
-	for (; I!=E; I++)		summary_delta	+= *((int*)I);
+	for (; I!=E; I++)	
+		summary_delta	+= *((int*)I);
 
 	s64 frac				=	s64(summary_delta) % s64(size);
 	if (frac<0)				frac=-frac;
 	summary_delta			/=	s64(size);
-	if (frac>s64(size/2))	summary_delta += (summary_delta<0)?-1:1;
+	if (frac>s64(size/2))	
+		summary_delta += (summary_delta<0)?-1:1;
+	
 	net_TimeDelta_Calculated=	s32(summary_delta);
 	net_TimeDelta			=	(net_TimeDelta*5+net_TimeDelta_Calculated)/6;
-//	Msg("* CLIENT: d(%d), dc(%d), s(%d)",net_TimeDelta,net_TimeDelta_Calculated,size);
 }
 
 void 				sync_thread(void* P)
@@ -1052,34 +1054,28 @@ BOOL	IPureClient::net_IsSyncronised()
 #include <Ws2tcpip.h>
 bool	IPureClient::GetServerAddress		(ip_address& pAddress, DWORD* pPort)
 {
-	*pPort		= 0;
-	if (!net_Address_server) return false;
-
-	WCHAR wstrHostname[ 2048 ] = {0};	
-	DWORD dwHostNameSize = sizeof(wstrHostname);
-	DWORD dwHostNameDataType = DPNA_DATATYPE_STRING;
-	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwHostNameSize, &dwHostNameDataType ));
-
-	string2048				HostName;
-	CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
-
-	hostent* pHostEnt		= gethostbyname(HostName);
-	char*					localIP;
-	localIP					= inet_ntoa (*(struct in_addr *)*pHostEnt->h_addr_list);
-	pHostEnt				= gethostbyname(pHostEnt->h_name);
-	localIP					= inet_ntoa (*(struct in_addr *)*pHostEnt->h_addr_list);
-	pAddress.set			(localIP);
-
-//.	pAddress[0]				= (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_net;
-//.	pAddress[1]				= (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_host;
-//.	pAddress[2]				= (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_lh;
-//.	pAddress[3]				= (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_impno;
-
-	DWORD dwPort			= 0;
-	DWORD dwPortSize		= sizeof(dwPort);
-	DWORD dwPortDataType	= DPNA_DATATYPE_DWORD;
-	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_PORT, &dwPort, &dwPortSize, &dwPortDataType ));
-	*pPort					= dwPort;
+//	*pPort		= 0;
+//	if (!net_Address_server) return false;
+//
+//	WCHAR wstrHostname[ 2048 ] = {0};	
+//	DWORD dwHostNameSize = sizeof(wstrHostname);
+//	DWORD dwHostNameDataType = DPNA_DATATYPE_STRING;
+//	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwHostNameSize, &dwHostNameDataType ));
+//
+//	string2048				HostName;
+//	CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
+//
+//	hostent* pHostEnt		= gethostbyname(HostName);
+//	char*					localIP;
+// 	pHostEnt				= gethostbyname(pHostEnt->h_name);
+//	localIP					= inet_ntoa (*(struct in_addr *)*pHostEnt->h_addr_list);
+//	pAddress.set			(localIP);
+//
+//	DWORD dwPort			= 0;
+//	DWORD dwPortSize		= sizeof(dwPort);
+//	DWORD dwPortDataType	= DPNA_DATATYPE_DWORD;
+//	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_PORT, &dwPort, &dwPortSize, &dwPortDataType ));
+//	*pPort					= dwPort;
 
 	return true;
 };

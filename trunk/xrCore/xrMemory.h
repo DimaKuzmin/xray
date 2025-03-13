@@ -3,27 +3,7 @@
 #pragma once
 
 #include "memory_monitor.h"
-
-#ifdef USE_MEMORY_MONITOR
-#	define DEBUG_MEMORY_NAME
-#endif // USE_MEMORY_MONITOR
-
-#ifndef M_BORLAND
-#	if 0//def DEBUG
-#		define DEBUG_MEMORY_MANAGER
-#	endif // DEBUG
-#endif // M_BORLAND
-
-#ifdef DEBUG_MEMORY_MANAGER
-	XRCORE_API	extern BOOL	g_bMEMO;
-#	ifndef DEBUG_MEMORY_NAME
-#		define DEBUG_MEMORY_NAME
-#	endif // DEBUG_MEMORY_NAME
-	extern XRCORE_API	void dump_phase	();
-#	define DUMP_PHASE	do {dump_phase();} while (0)
-#else // DEBUG_MEMORY_MANAGER
-#	define DUMP_PHASE	do {} while (0)
-#endif // DEBUG_MEMORY_MANAGER
+#	define DUMP_PHASE	do {} while (0)s
 
 #include "xrMemory_pso.h"
 #include "xrMemory_POOL.h"
@@ -42,15 +22,6 @@ public:
 	void				_initialize		(BOOL _debug_mode=FALSE);
 	void				_destroy		();
 
-#ifdef DEBUG_MEMORY_MANAGER
-	BOOL				debug_mode;
-	xrCriticalSection	debug_cs;
-	std::vector<mdbg>	debug_info;
-	u32					debug_info_update;
-	u32					stat_strcmp		;
-	u32					stat_strdock	;
-#endif // DEBUG_MEMORY_MANAGER
-
 	u32					stat_calls;
 	s32					stat_counter;
 public:
@@ -63,14 +34,9 @@ public:
 	void				mem_counter_set	(u32 _val)	{ stat_counter = _val;	}
 	u32					mem_counter_get	()			{ return stat_counter;	}
 
-#ifdef DEBUG_MEMORY_NAME
-	void				mem_statistic	(LPCSTR fn);
-	void*				mem_alloc		(size_t	size				, const char* _name);
-	void*				mem_realloc		(void*	p, size_t size		, const char* _name);
-#else // DEBUG_MEMORY_NAME
 	void*				mem_alloc		(size_t	size				);
 	void*				mem_realloc		(void*	p, size_t size		);
-#endif // DEBUG_MEMORY_NAME
+ 
 	void				mem_free		(void*	p					);
 
 	pso_MemCopy*		mem_copy;
@@ -88,28 +54,19 @@ extern XRCORE_API	xrMemory	Memory;
 #define FillMemory(a,b,c)	Memory.mem_fill(a,c,b)
 
 // delete
-#ifdef __BORLANDC__
-	#include "xrMemory_subst_borland.h"
-#else
-	#include "xrMemory_subst_msvc.h"
-#endif
+ 
+#include "xrMemory_subst_msvc.h"
+ 
 
 // generic "C"-like allocations/deallocations
-#ifdef DEBUG_MEMORY_NAME
-	template <class T>
-	IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T),typeid(T).name());	}
-	template <class T>
-	IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
-	IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size,"xr_malloc");				}
-	IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size,"xr_realloc");			}
-#else // DEBUG_MEMORY_NAME
-	template <class T>
-	IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
-	template <class T>
-	IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
-	IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
-	IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
-#endif // DEBUG_MEMORY_NAME
+ 
+template <class T>
+IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
+template <class T>
+IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
+IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
+IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
+ 
 
 XRCORE_API	char* 	xr_strdup	(const char* string);
 

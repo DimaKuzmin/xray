@@ -916,7 +916,7 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	UIStaticQuickHelp.Show				(NULL!=actor_action);
 
 	if(NULL!=actor_action){
-		if(stricmp(actor_action,UIStaticQuickHelp.GetText()))
+		if(_stricmp(actor_action,UIStaticQuickHelp.GetText()))
 			UIStaticQuickHelp.SetTextST				(actor_action);
 	}
 

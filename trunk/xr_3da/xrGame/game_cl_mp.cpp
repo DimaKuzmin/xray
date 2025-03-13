@@ -183,13 +183,13 @@ bool game_cl_mp::OnKeyboardPress(int key)
 
 				if (kCHAT_TEAM == key)
 				{
-					prefix.sprintf("%s> ", *st.translate("st_mp_say_to_team"));
+					prefix.printf("%s> ", *st.translate("st_mp_say_to_team"));
 					
 					pChatWnd->TeamChat();
 				}
 				else
 				{
-					prefix.sprintf("%s> ", *st.translate("st_mp_say_to_all"));					
+					prefix.printf("%s> ", *st.translate("st_mp_say_to_all"));					
 					pChatWnd->AllChat();
 				}
 
@@ -1038,7 +1038,7 @@ void	game_cl_mp::OnEventMoneyChanged			(NET_Packet& P)
 		if(pUIDM)
 		{
 			string256					MoneyStr;
-			itoa(local_player->money_for_round, MoneyStr, 10);
+			_itoa(local_player->money_for_round, MoneyStr, 10);
 			pUIDM->ChangeTotalMoneyIndicator	(MoneyStr);
 		}
 	}
@@ -1093,7 +1093,7 @@ void	game_cl_mp::OnEventMoneyChanged			(NET_Packet& P)
 			}break;
 		case SKT_KIR: 
 			{				
-				BName.sprintf("%d_kill_in_row", BonusKills);
+				BName.printf("%d_kill_in_row", BonusKills);
 				
 				sprintf_s		(MoneyStr, sizeof(MoneyStr), "%d", BonusKills);
 				BMS.m_killer.m_name = MoneyStr;
